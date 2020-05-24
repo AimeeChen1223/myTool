@@ -1,0 +1,67 @@
+<!-- 问卷列表 -->
+<div id="questionnaire-list">
+   <div class="clearfix">
+       <div class="pull-left first-title">问卷列表</div>
+       <div class="pull-right">
+           <a href="javascript:;" class="btn btn-primary" @click="pageLoad('questionnaire/edit.html');">添加问卷</a>
+       </div>
+   </div>
+   <div class="questionnaire">
+       <ul class="lists">
+           <li v-for="(item,index) in lists">
+               <div class="inner">
+                   <div class="title clearfix">
+                       <div class="pull-right">
+                           <ul class="clearfix msg">
+                               <li class="pull-left">ID：<span v-text="item.id"></span></li>
+                               <li v-if="item.status==0" class="pull-left status gray"><i class="circle"></i>状态：<span>未发布</span></li>
+                               <li v-else class="pull-left status green"><i class="circle"></i>状态：<span>已发布</span></li>
+                               <li class="pull-left">已填写：<span v-text="item.answer"></span></li>
+                               <li class="pull-left">日期：<span v-text="item.createTime"></span></li>
+                           </ul>
+                       </div>
+                       <div class="title_name"><a href="#" class="ellipsis" v-text="item.title"></a></div>
+                   </div>
+                   <div class="control clearfix">
+                       <div class="pull-left">
+                           <ul class="clearfix left">
+                               <li class="pull-left"><a href="#" class="btn btn-sm btn-success">发布</a></li>
+                               <li class="pull-left"><a href="javascript:;" class="btn btn-sm btn-info" @click="pageLoad('questionnaire/edit.html');">编辑</a></li>
+                               <li class="pull-left"><a href="#" class="btn btn-sm btn-danger">删除</a></li>
+                           </ul>
+                       </div>
+                       <div class="pull-right">
+                           <ul class="clearfix right">
+                               <li class="pull-left"><a href="#" class="btn btn-sm btn-primary">结果 & 分析</a></li>
+                               <li class="pull-left"><a href="#" class="btn btn-sm btn-warning">问卷推送</a></li>
+                           </ul>
+                       </div>
+                   </div>
+               </div>
+           </li>
+       </ul>
+   </div>
+</div>
+ <script type="text/javascript">
+    var vm = new Vue({
+        el: '#questionnaire-list',
+        data: {
+          lists :[]
+        },
+        created : function(){
+          //TODO:
+        },
+        mounted : function(){
+          var that = this;
+          var success = function (res) {
+              that.lists = res;
+          }
+          config.ajaxGetData("GET", config.protocol['questionnaire_list'], success);
+        },
+        methods : {
+          pageLoad : function(page){
+            $('.js_load').empty().load(page);
+          }
+        }
+    });
+</script>

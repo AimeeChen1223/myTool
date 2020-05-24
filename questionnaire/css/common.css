@@ -1,0 +1,76 @@
+@charset "utf-8";
+html{font-size:14px;}
+/* 设置需要的标签内边距和外边距为0，仅添加需要的标签，不建议使用星号（*）代替，以下为示例 */
+body, ul, h3, img, dl, dt, dd {margin: 0;padding: 0;font-family: "Microsoft YaHei","verdana", "arial","PingFang SC",'Helvetica Neue',Helvetica,sans-serif;}
+a {cursor: pointer}
+/* 列表样式设置，以下为示例，仅写你用到的标签 */
+ul,li{list-style-type: none;list-style-position: inside;}
+/* 设置body默认样式 */
+body {font-size: 14px;color: #fff;background:#f0f0f0;margin:0!important;}
+/* 设置文本选中后的样式，默认设置的为背景和字体 */
+/*::selection {background: #138FCB !important;color: #eee !important;}*/
+/* 设置链接默认样式 */
+a ,a:hover ,a:active,a:visited{text-decoration: none!important;color: #fff;}
+/*文本框样式初始化*/
+select,input,textarea,button{border:none;outline: none;background:none;border-radius:0;font-size: 12px;color: #666;padding:0;}
+/* 设置图片无边框 */
+img {border: none;}
+/* 超过指定宽度，用省略号代替 */
+.ellipsis {display: block;word-break: keep-all;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+/*强制换行*/
+.break_word {word-wrap: break-word;word-break: break-all;}
+/*禁止换行*/
+.keep_all {word-break: keep-all;white-space: nowrap;}
+/* 设置文本选中后的样式，默认设置的为背景和字体 */
+/*::selection {background: #078DD1;color: #eee;}*/
+.inline{display: inline-block;}
+/*文字对齐*/
+.align_l{text-align: left;}
+.align_c{text-align: center;}
+.align_r{text-align: right;}
+.f14{font-size: 14px;}
+.f16{font-size: 16px;}
+/*头部颜色*/
+/*css 过渡 S*/
+.transition5{ transition: all 0.3s;-webkit-transition: all 0.3s; -moz-transition: all 0.3s; -ms-transition: all 0.3s; -o-transition: all 0.3s; }
+/*css 过渡 E*/
+/*定义滚动条高宽及背景 高宽分别对应横竖滚动条的尺寸*/  
+::-webkit-scrollbar{  width: 6px;height: 6px;background: none;}
+/*定义滚动条轨道 内阴影+圆角*/
+::-webkit-scrollbar-track{border-radius: 10px;background-color: rgba(255,255,255,0.3);background: none;}
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb{border-radius: 10px;-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);background-color: rgba(255,255,255,0.3);  }
+#waiting{display: none;}
+#waiting.show{display: block;}
+#waiting.covers .bg_cover{background-color: #fff;}
+.loadtip{width: 140px;height: 140px;border-radius: 5px;left: 50%;top: 50%;margin-left: -70px;margin-top: -70px;position: absolute;background: rgba(0,0,0,0.5);}
+.loadtip .desc{color: #fff;font-size: 14px;text-align: center;padding:15px 0;}
+.wait_icon{display: inline-block;width: 45px;height: 45px;background:url(../img/loading.png) center center no-repeat;background-size:100%;margin-top:30px;}
+.wait_icon{
+	-webkit-transform: rotate(360deg);
+	animation: rotation 1s ease infinite;
+	-moz-animation: rotation 1s ease infinite;
+	-webkit-animation: rotation 1s ease infinite;
+	-o-animation: rotation 1s ease infinite;
+}
+@keyframes rotation{
+	from {-webkit-transform: rotate(0deg);}
+	to {-webkit-transform: rotate(360deg);}
+}
+@-webkit-keyframes rotation{
+	from {-webkit-transform: rotate(0deg);}
+	to {-webkit-transform: rotate(360deg);}
+}
+/*cover S*/
+.covers{position: fixed;z-index: 100;left: 0;top: 0;width: 100%;height: 100%;display: none;}
+.covers.show{display: block;}
+.covers .bg_cover,
+.tip_inner .bg_cover{position: absolute;z-index: -1;left: 0;top: 0;width: 100%;height: 100%;background-color: #000;opacity: 0.6;}
+.covers .cover_inner{position: absolute;z-index: 0;left: 50%;top:100px;margin-left: -320px;width: 640px;}
+.cover_inner .close{width: 100%;opacity: 1;display: block;text-align: center;padding:10px;}
+.cover_inner .close .icon{display: inline-block;width: 48px;height: 48px;background-size:100%;background-image: url(../img/close.png);}
+.cover_main{background-color: #fff;border-radius: 5px;max-height: 460px;padding:10px;overflow: hidden;}
+#cover_iframe{height: 440px;overflow-y: auto;}
+.tip_inner{display: none;position: fixed;z-index: 100;left: 50%;margin-left: -150px;padding:15px;border-radius: 10px;color: #fff;font-size: 16px;text-align: center;width: 230px;bottom: 115px;overflow: hidden;}
+.tip_inner.show{display: block;}
+/*cover E*/

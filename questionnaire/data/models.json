@@ -1,0 +1,255 @@
+[{
+	"name":"题型选取",
+	"child":{
+		"type_userInfo":{
+			"name":"个人信息",
+			"data_model":{
+				"userInfo" : {"name":"个人信息","content":[]}
+			}
+		},
+		"type_choice":{
+			"name":"选择题",
+			"data_model":{
+				"choice": {"name":"选择题","content":[]}
+			}
+		},
+		"type_fill":{
+			"name":"填空题",
+			"data_model":{
+				"fill":{"name":"填空题","content":[]}
+			}
+		},
+		"type_matrix":{
+			"name":"矩阵题",
+			"data_model":{
+				"fill":{"name":"填空题","content":[]}
+			}
+		},
+		"type_scence":{
+			"name":"情景题",
+			"data_model":{
+				"scence":{"name":"情景题","content":[]}
+			}
+		}
+	}
+},{
+	"name":"个人信息",
+	"child":{
+		"info_name":{
+			"name":"姓名",
+			"data_model":{}
+		},
+		"info_sex":{
+			"name":"性别",
+			"data_model":{}
+		},
+		"info_school":{
+			"name":"学校",
+			"data_model":{}
+		},
+		"info_basic":{
+			"name":"基本信息",
+			"data_model":{}
+		}
+	}
+},{
+	"name":"选择题",
+	"child":{
+		"single_choice":{
+			"name":"单选题",
+			"key": "choice",
+			"data_model":{
+				"id":"",
+				"subject":"单选题数据模板",
+				"keyLocation":[
+					{"start":3,"size":6,"param":{"key":"<V4>","value":23}}
+				],
+				"Qtype":"single_choice",
+				"options":[
+					{"id":1,"element":"选项1","value":100},
+					{"id":2,"element":"选项2","value":50},
+					{"id":3,"element":"选项3","value":25},
+					{"id":4,"element":"选项4","value":0}
+				],
+				"model":{
+					"name":"Q_1",
+					"value":"",
+					"formula":"<V1>+<V2>*<V3>/<V4>",
+					"formula_ex":"<V1>+<V2>/<V3>/<V4>"
+				},
+				"index_id":111
+			}
+		},
+		"multiple_chioce":{
+			"name":"多选题",
+			"key": "choice",
+			"data_model":{
+				"id":"",
+				"subject":"多选题数据模板",
+				"keyLocation":[
+					{"start":3,"size":6,"param":{"key":"<V4>","value":2}}
+				],
+				"Qtype":"multiple_chioce",
+				"options":[
+					{"id":1,"element":"选项1","value":100},
+					{"id":2,"element":"选项2","value":50},
+					{"id":3,"element":"选项3","value":25},
+					{"id":4,"element":"选项4","value":0}
+				],
+				"model":{
+					"name":"Q_1",
+					"value":"",
+					"formula":"<V1>+<V2>*<V3>/<V4>",
+					"formula_ex":"<V1>+<V2>/<V3>/<V4>"
+				},
+				"index_id":111
+			}
+		}
+	}
+},{
+	"name":"填空题",
+	"child":{
+		"single_fill" : {
+			"name" : "单项填空题",
+			"key": "fill",
+			"data_model":{
+				"subject":"单项填空题数据模板",
+				"keyLocation":[
+					{"start":5,"size":6,"param":"<V4>"}
+				],
+				"Qtype":"single_fill",	
+				"model":{
+					"param":{
+						"<V1>":{"value":1,"isGlobal":true},
+						"<V2>":{"value":2},
+						"<V31>":{"value":311},
+						"<V4>":{"value":4}
+					},
+					"formula":"<V1>+<V2>*<V3>/<V4>"
+				},
+				"index_id":111
+			}
+		},
+		"multiple_fill" : {
+			"name" : "多项填空题",
+			"key": "fill",
+			"data_model":{
+				"subject":"多项填空题数据模板",
+				"keyLocation":[
+					{"start":5,"size":6,"param":"<V4>"}
+				],
+				"Qtype":"multiple_fill",
+				"model":{
+					"param":{
+						"<V1>":{"value":1,"isGlobal":true},
+						"<V2>":{"value":2},
+						"<V31>":{"value":311},
+						"<V4>":{"value":4}
+					},
+					"formula":"<V1>+<V2>*<V3>/<V4>"
+				},
+				"index_id":111
+			}
+		}
+	}
+},{
+	"name":"矩阵题",
+	"child":{
+		"matrix": {
+			"name":"矩阵量表",
+			"key": "matrix",
+			"data_model":{
+				"id":"",
+				"subject":"我们的问卷投放量很大，每次问卷调查都是一次品牌形象宣传，因此除了问卷功能，更注重系统环境的稳定性。",
+				"Qtype":"matrix",
+				"dimension":[
+					{"key":"非常不满意","value":1},
+					{"key":"不满意","value":2},
+					{"key":"满意","value":3},
+					{"key":"比较满意","value":4},
+					{"key":"非常满意","value":5}
+				],
+				"groups":[
+					{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+					{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+					{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+					{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+					{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+					{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+					{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+					{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+					{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+					{"subject":"矩阵量表问题内容","value":0,"index_id":111}
+				],
+				"model":{
+					"name":"Q_1",
+					"value":"",
+					"formula":"<V1>+<V2>*<V3>/<V4>"
+				}
+			}
+		},
+		"matrix_check": {
+			"name":"矩阵单选",
+			"key": "matrix",
+			"data_model":{
+				"id":"",
+				"subject":"我们的问卷投放量很大，每次问卷调查都是一次品牌形象宣传，因此除了问卷功能，更注重系统环境的稳定性。",
+				"Qtype":"matrix",
+				"dimension":[
+					{"key":"非常不满意","value":1},
+					{"key":"不满意","value":2},
+					{"key":"满意","value":3},
+					{"key":"比较满意","value":4},
+					{"key":"非常满意","value":5}
+				],
+				"groups":[
+					{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+					{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+					{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+					{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+					{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+					{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+					{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+					{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+					{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+					{"subject":"矩阵量表问题内容","value":0,"index_id":111}
+				],
+				"model":{
+					"value":"",
+					"formula":"<V1>+<V2>*<V3>/<V4>"
+				}
+			}
+		}
+	}
+},{
+	"name":"情景题",
+	"child": {
+		"scence":{
+			"name":"图像处理",
+			"data_model":{
+				"name" : "图像处理",
+				"QType": "scence",
+				"bg_url" : "",
+				"groups" : [
+					{
+						"type":"image",
+						"left":0,
+						"top":0,
+						"width":300,
+						"height":60,
+						"imgUrl":"123",
+						"model":"<E1>/<E2>",
+						"visible":true,
+						"event":{
+							"enableClick":"<E1>",
+							"disableClick" : "<E2>"
+						}
+					}
+				],
+				"model" : {
+
+				}
+			}
+		}
+	}
+}]

@@ -1,0 +1,97 @@
+<div class="clearfix form-group">
+	<div class="pull-left line_h30 w40">位置</div>
+	<div class="margin_l40 align_r">
+		<div class="clearfix inline align_c">
+			<div class="line_h30 w40 pull-left">X</div>
+			<div class="pull-left"><input class="input_style w74 js_pos_x" value="75px" /></div>
+		</div>
+		<div class="clearfix inline align_c">
+			<div class="line_h30 w40 pull-left">Y</div>
+			<div class="pull-left"><input class="input_style w74 js_pos_y" value="350px" /></div>
+		</div>
+	</div>
+</div>
+<div class="clearfix form-group">
+	<div class="pull-left line_h30 w40">尺寸</div>
+	<div class="margin_l40 align_r">
+		<div class="clearfix inline align_c">
+			<div class="line_h30 w40 pull-left">宽</div>
+			<div class="pull-left"><input class="input_style w74 js_element_w" value="100px" /></div>
+		</div>
+		<div class="clearfix inline align_c">
+			<div class="line_h30 w40 pull-left">高</div>
+			<div class="pull-left"><input class="input_style w74 js_element_h" value="100px" /></div>
+		</div>
+	</div>
+</div>
+<div class="clearfix form-group" style="position: relative;z-index:1;">
+	<div class="pull-left line_h30 w40">边框</div>
+	<div class="margin_l40 align_r">
+		<div class="inline clearfix">
+			<div class="inline pull-left margin_lr3">
+				<div class="color_box w70 js_border_color">
+					<input type="hidden" class="color_picker" data-editor="border" name="color_picker_border" value="">
+				</div>
+			</div>
+			<div class="inline pull-left margin_lr3 align_c">
+				<div class="select_box js_select_module js_border_style">
+					<a href="javascript:;" class="block clearfix">
+						<i class="pull-right arrow_icon"></i>
+						<span data-value="2" class="ellipsis cur_select" title="实线">实线</span>
+					</a>
+					<ul class="lists js_select_border">
+						<li>
+							<a href="javascript:;" data-value="solid">实线</a>
+						</li>
+						<li>
+							<a href="javascript:;" data-value="dash">虚线</a>
+						</li>
+						<li>
+							<a href="javascript:;" data-value="dotted">虚线</a>
+						</li>
+					</ul>
+					<!-- <input type="hidden" name="font_style" value="2" /> -->
+				</div>
+			</div>
+			<div class="pull-left margin_lr3">
+				<div class="clearfix inline align_c">
+					<div class="pull-left"><input class="input_style w74 js_border_width" value="0px" /></div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="form-group" style="position: relative;z-index:0;">
+	<div class="clearfix slider_box js_opacity" style="padding:0;">
+		<div class="pull-left left">透明</div>
+		<div class="pull-right right">
+			<div><span class="js_end_price">100</span>%</div>
+		</div>
+		<div style="margin-left:40px;margin-right:70px;">
+			<!--进度条拖拽 S-->
+			<div class="slidebar" data-type="opacity">
+				<span class="line" style="width: 100%"></span>
+				<div class="end lyrow ui-draggable" style="left:100%;">
+					<i class="drag"></i>
+				</div>
+			</div>
+			<!--进度条拖拽 E-->
+		</div>
+	</div>
+	<div class="clearfix slider_box js_border_radius" style="padding:0;">
+		<div class="pull-left left">圆角</div>
+		<div class="pull-right right">
+			<div><span class="js_end_price">0</span>px</div>
+		</div>
+		<div style="margin-left:40px;margin-right:70px;">
+			<!--进度条拖拽 S-->
+			<div class="slidebar" data-type="radius">
+				<span class="line" style="width: 0px;"></span>
+				<div class="end lyrow ui-draggable" style="left:0;">
+					<i class="drag"></i>
+				</div>
+			</div>
+			<!--进度条拖拽 E-->
+		</div>
+	</div>
+</div>

@@ -1,0 +1,152 @@
+{
+	"id":1,
+	"title":"问卷设计模板",
+	"description":"问卷描述",
+	"globalParam":{
+		"<V1>":{"value":1},
+		"<V2>":{"value":2},
+		"<V3>":{"value":3}
+	},
+	"model":"",
+	"question": {
+		"userInfo" : {"name":"个人信息","content":[]},
+		"choice" : {
+			"name":"选择题",
+			"content":[
+				{
+					"id":1,
+					"subject":"PC端游、页游满意度",
+					"keyLocation":[
+						{"start":3,"size":6,"param":{"key":"<V123>","value":23}}
+					],
+					"Qtype":"single_choice",
+					"options":[
+						{"id":1,"element":"选项1","value":100},
+						{"id":2,"element":"选项2","value":50},
+						{"id":3,"element":"选项3","value":25},
+						{"id":4,"element":"选项4","value":0}
+					],
+					"model":{
+						"name":"Q_1",
+						"value":"",
+						"formula":"<V1>+<V2>*<V3>/<V4>",
+						"formula_ex":"<V1>+<V2>/<V3>/<V4>"
+					},
+					"index_id":111
+				},
+				{
+					"id":2,
+					"subject":"我们的问卷投放量很大，每次问卷调查都是一次品牌形象宣传，因此除了问卷功能，更注重系统环境的稳定性。",
+					"keyLocation":[
+						{"start":3,"size":6,"param":{"key":"<V456>","value":456}},
+						{"start":22,"size":10,"param":{"key":"","value":""}}
+					],
+					"Qtype":"multiple_chioce",
+					"options":[
+						{"id":1,"element":"选项1","value":100},
+						{"id":2,"element":"选项2","value":50},
+						{"id":3,"element":"选项3","value":25},
+						{"id":4,"element":"选项4","value":0}
+					],
+					"model":{
+						"name":"Q_2",
+						"value":[],
+						"formula":"<V1>+<V2>*<V3>/<V4>",
+						"formula_ex":"<V1>+<V2>+<V3>+<V4>"
+					},
+					"index_id":111
+				}
+			]
+		},
+		"fill" : {
+			"name":"填空题",
+			"content":[
+				{
+					"id":3,
+					"subject":"PC端游、页游满意度",
+					"keyLocation":[
+						{"start":3,"size":6,"param":{"key":"<V123>","value":11}},
+						{"start":3,"size":6,"param":{"key":"<V123>","value":11}}
+					],
+					"Qtype":"single_fill",
+					"model":{
+						"name":"Q_1",
+						"value":"",
+						"formula":"<V1>+<V2>*<V3>/<V4>",
+						"formula_ex":"<V1>-<V2>/<V3>+<V4>"
+					},
+					"index_id":111
+				},
+				{
+					"id":4,
+					"subject":"我们的问卷投放量很大，每次问卷调查都是一次品牌形象宣传，因此除了问卷功能，更注重系统环境的稳定性。",
+					"Qtype":"multiple_fill",
+					"keyLocation":[
+						{"start":3,"size":6,"param":{"key":"<V456>","value":456}},
+						{"start":22,"size":10,"param":{"key":"","value":""}}
+					],
+					"model":{
+						"name":"Q_1",
+						"value":"",
+						"formula":"<V1>+<V2>*<V3>/<V4>",
+						"formula_ex":"<V1>+<V2>+<V3>+<V4>"
+					},
+					"index_id":111
+				}
+			]
+		},
+		"matrix" : {
+			"name":"矩阵题",
+			"content":[
+				{
+					"id":5,
+					"subject":"我们的问卷投放量很大，每次问卷调查都是一次品牌形象宣传，因此除了问卷功能，更注重系统环境的稳定性。",
+					"Qtype":"matrix",
+					"dimension":[
+						{"key":"非常不满意","value":1},
+						{"key":"不满意","value":2},
+						{"key":"满意","value":3},
+						{"key":"比较满意","value":4},
+						{"key":"非常满意","value":5}
+					],
+					"groups":[
+						{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+						{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+						{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+						{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+						{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+						{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+						{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+						{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+						{"subject":"矩阵量表问题内容","value":0,"index_id":111},
+						{"subject":"矩阵量表问题内容","value":0,"index_id":111}
+					],
+					"model":{
+						"name":"Q_1",
+						"value":"",
+						"formula":"<V1>+<V2>*<V3>/<V4>"
+					}
+				}
+			]
+		},
+		"scence" : {
+			"name":"情景题",
+			"content":[{
+				"id" : 6,
+				"name" : "图像处理",
+				"QType": "scence",
+				"subject":"文件保存操作步骤：",
+				"bg_url" : "",
+				"groups" : []
+			},
+			{
+				"id" : 7,
+				"name" : "图像处理",
+				"QType": "scence",
+				"subject":"文件保存操作步骤：",
+				"bg_url" : "",
+				"groups" : []
+			}]
+		}
+	}
+}

@@ -1,0 +1,11 @@
+{
+	"id":1,
+	"title":"问卷设计模板",
+	"description":"问卷描述",
+	"globalParam":{
+		"<V1>":{"value":1},
+		"<V2>":{"value":2},
+		"<V3>":{"value":3}
+	},
+	"question": {}
+}

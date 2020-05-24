@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+		<meta charset="utf-8">
+		<title>HTML5自定义</title>
+		<meta name="keywords" content="" />
+		<meta name="description" content="" />
+		<link href="../css/bootstrap.min.css" rel="stylesheet" />
+		<link href="../css/vue.css" rel="stylesheet" />
+		<link href="../css/animate.css" rel="stylesheet" />
+		<link href="../js/colorpicker/palette-color-picker.css" rel="stylesheet" />
+	</head>
+	<body>
+		<!-- top S -->
+		<!--  <div id="dropzone">
+		    <p>Drop here</p>
+		  </div>
+		   <div id="image"></div>
+  	<pre id="data"></pre> -->
+		<div class="header clearfix">
+			<div class="pull-left">
+				<div class="clearfix">
+					<!-- <div class="pull-left">
+						<a class="logo" href="#">
+							<img src="../img/logo_icon.png" />
+						</a>
+					</div> -->
+					<!-- <div class="pull-left">
+						<span class="name">CNSunRun</span>
+					</div> -->
+				</div>
+			</div>
+			<div class="pull-right">
+				<ul class="clearfix">
+					<li class="pull-left">
+						<a href="javascript:;" class="control js_mobile_view">
+							<img src="../img/icon_18.png" />
+							<div class="hover_show transition5">
+								<i></i>
+								<span>预览</span>
+							</div>
+						</a>
+					</li>
+					<li class="pull-left">
+						<a href="javascript:;" class="control js_mobile_save">
+							<img src="../img/icon_3.png" />
+							<div class="hover_show transition5">
+								<i></i>
+								<span>保存</span>
+							</div>
+						</a>
+					</li>
+					<li class="pull-left">
+						<a href="javascript:;" class="control js_mobile_reset">
+							<img src="../img/icon_19.png" />
+							<div class="hover_show transition5">
+								<i></i>
+								<span>重置</span>
+							</div>
+						</a>
+					</li>
+				</ul>
+			</div>
+			<div class="widget_list">
+				<ul class="align_c clearfix">
+					<!-- <li class="inline">
+						<a href="#" class="icon_1">PSD导入</a>
+					</li> -->
+					<li class="inline">
+						<a href="#" class="icon_1">表单</a>
+						<div class="hover_show transition5 w354">
+							<i></i>
+							<div class="inner js_insert" data-page="form_widget.html">
+								
+							</div>
+						</div>
+					</li>
+					<li class="inline">
+						<a href="javascript:;" data-type="text" class="icon_2 js_add_widget">文本</a>
+					</li>
+					<li class="inline">
+						<a href="#" class="icon_3">图片</a>
+						<div class="hover_show transition5 w556">
+							<i></i>
+							<div class="inner js_insert" data-page="image_source.html"></div>
+						</div>
+					</li>
+					<li class="inline">
+						<a href="javascript:;" class="icon_4">媒体</a>
+						<div class="hover_show transition5 w200" style="margin-left:-100px;">
+							<i></i>
+							<div class="inner js_insert" data-page="media.html"></div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<!-- top E -->
+
+		<div class="wrapper">
+			<div class="clearfix">
+				<div class="pull-left bg_ff w295 js_get_h">
+					<div class="js_scroll">
+						<!-- left S -->
+						<ul class="leftbox js_left_page">
+							
+						</ul>
+						<ul class="leftbox">
+							<li class="clearfix">
+								<div class="add_page">
+									<a href="javascript:;" class="js_edit_page"></a>
+								</div>
+							</li>
+						</ul>
+						<!-- left E -->
+					</div>
+				</div>
+				<div class="pull-right bg_ff w360 js_get_h">
+					<div class="js_scroll">
+						<!-- right S -->
+						<div class="rightbox">
+							<ul class="row top_type js_right_type">
+								<li class="col-md-4 active">
+									<a href="#">编辑</a>
+								</li>
+								<li class="col-md-4 hide">
+									<a href="#">图片</a>
+								</li>
+								<li class="col-md-4">
+									<a href="#">外观</a>
+								</li>
+								<li class="col-md-4">
+									<a href="#">动画</a>
+								</li>
+							</ul>
+							<ul class="editor_list js_right_target">
+								<li class="js_insert js_edit_view" data-page="editor.html">
+									<!-- 编辑 S -->
+
+									<!-- 编辑 E -->
+								</li>
+								<li class="hide">
+									<!-- 图片 S -->
+									
+									<!-- 图片 E -->
+								</li>
+								<li class="hide js_insert" data-page="view.html">
+									<!-- 外观 S -->
+									
+									<!-- 外观 E -->
+								</li>
+								<li class="hide js_insert" data-page="animate.html" >
+									<!-- 动画 S -->
+									
+									<!-- 动画 E -->
+								</li>
+							</ul>
+						</div>
+						<!-- right E -->
+					</div>
+				</div>
+				<div class="main_box js_get_h">
+					<div class="js_scroll align_c">
+						<div id="module" class="inline module">
+							<!-- <div id="image"></div> -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- mobile dialog S -->
+		<div class="mobile_dialog js_mobile_dialog" style="display: none;">
+			<div class="bg_shadow"></div>
+			<div class="content animated">
+				<div class="viewer scale_5"></div>
+			</div>
+		</div>
+		<!-- mobile dialog E -->
+
+		<!-- 正在导入 S -->
+		<div class="mobile_dialog js_import_load" style="display: none;">
+			<div class="bg_shadow"></div>
+			<div class="import_load animated rotateOut infinite">
+				<img src="../img/loading.png" />
+			</div>
+		</div>
+		<!-- 正在导入 E -->
+
+		<!-- 设置图层顺序 S -->
+		<div class="level_box js_level_box ui-draggable">
+			<div class="title ui-draggable-handle">元素列表</div>
+			<div class="list">
+				<ul class="js_widget_level ui-sortable">
+					<!-- insert widget level list -->
+				</ul>
+			</div>
+			<div class="foot"></div>
+		</div>
+		<!-- 设置图层顺序 E -->
+
+		<!-- 背景音乐选择弹出框 S -->
+		<div class="music_dialog" style="display: none;">
+			<div class="bg_shadow"></div>
+			<div class="content animated">
+				<div class="clearfix">
+					<div class="pull-left">
+						
+					</div>
+					<div class="source_list">
+						<ul class="clearfix">
+							<li class="pull-left">
+								<div class="inner">
+									<a href="javascript:;" class="block imgbox">
+										<div class="hover_show">
+											<div class="bg_shadow"></div>
+											<span>点此使用</span>
+										</div>
+										<img src="../img/media.png" width="112" height="112" />
+									</a>
+									<div class="clearfix">
+										<span class="pull-left">音乐1</span>
+										<a href="javascript:;" class="pull-right media_control pause"></a>
+									</div>
+								</div>
+							</li>
+							<li class="pull-left">
+								<div class="inner">
+									<a href="javascript:;" class="block imgbox">
+										<div class="hover_show">
+											<div class="bg_shadow"></div>
+											<span>点此使用</span>
+										</div>
+										<img src="../img/media.png" width="112" height="112" />
+									</a>
+									<div class="clearfix">
+										<span class="pull-left">音乐2</span>
+										<a href="javascript:;" class="pull-right media_control pause"></a>
+									</div>
+								</div>
+							</li>
+							<li class="pull-left">
+								<div class="inner">
+									<a href="javascript:;" class="block imgbox">
+										<div class="hover_show">
+											<div class="bg_shadow"></div>
+											<span>点此使用</span>
+										</div>
+										<img src="../img/media.png" width="112" height="112" />
+									</a>
+									<div class="clearfix">
+										<span class="pull-left">音乐3</span>
+										<a href="javascript:;" class="pull-right media_control pause"></a>
+									</div>
+								</div>
+							</li>
+							<li class="pull-left">
+								<div class="inner">
+									<a href="javascript:;" class="block imgbox">
+										<div class="hover_show">
+											<div class="bg_shadow"></div>
+											<span>点此使用</span>
+										</div>
+										<img src="../img/media.png" width="112" height="112" />
+									</a>
+									<div class="clearfix">
+										<span class="pull-left">音乐4</span>
+										<a href="javascript:;" class="pull-right media_control pause"></a>
+									</div>
+								</div>
+							</li>
+							<li class="pull-left">
+								<div class="inner">
+									<a href="javascript:;" class="block imgbox">
+										<div class="hover_show">
+											<div class="bg_shadow"></div>
+											<span>点此使用</span>
+										</div>
+										<img src="../img/media.png" width="112" height="112" />
+									</a>
+									<div class="clearfix">
+										<span class="pull-left">音乐5</span>
+										<a href="javascript:;" class="pull-right media_control pause"></a>
+									</div>
+								</div>
+							</li>
+							<li class="pull-left">
+								<div class="inner">
+									<a href="javascript:;" class="block imgbox">
+										<div class="hover_show">
+											<div class="bg_shadow"></div>
+											<span>点此使用</span>
+										</div>
+										<img src="../img/media.png" width="112" height="112" />
+									</a>
+									<div class="clearfix">
+										<span class="pull-left">音乐1</span>
+										<a href="javascript:;" class="pull-right media_control pause"></a>
+									</div>
+								</div>
+							</li>
+							<li class="pull-left">
+								<div class="inner">
+									<a href="javascript:;" class="block imgbox">
+										<div class="hover_show">
+											<div class="bg_shadow"></div>
+											<span>点此使用</span>
+										</div>
+										<img src="../img/media.png" width="112" height="112" />
+									</a>
+									<div class="clearfix">
+										<span class="pull-left">音乐2</span>
+										<a href="javascript:;" class="pull-right media_control pause"></a>
+									</div>
+								</div>
+							</li>
+							<li class="pull-left">
+								<div class="inner">
+									<a href="javascript:;" class="block imgbox">
+										<div class="hover_show">
+											<div class="bg_shadow"></div>
+											<span>点此使用</span>
+										</div>
+										<img src="../img/media.png" width="112" height="112" />
+									</a>
+									<div class="clearfix">
+										<span class="pull-left">音乐3</span>
+										<a href="javascript:;" class="pull-right media_control pause"></a>
+									</div>
+								</div>
+							</li>
+							<li class="pull-left">
+								<div class="inner">
+									<a href="javascript:;" class="block imgbox">
+										<div class="hover_show">
+											<div class="bg_shadow"></div>
+											<span>点此使用</span>
+										</div>
+										<img src="../img/media.png" width="112" height="112" />
+									</a>
+									<div class="clearfix">
+										<span class="pull-left">音乐4</span>
+										<a href="javascript:;" class="pull-right media_control pause"></a>
+									</div>
+								</div>
+							</li>
+							<li class="pull-left">
+								<div class="inner">
+									<a href="javascript:;" class="block imgbox">
+										<div class="hover_show">
+											<div class="bg_shadow"></div>
+											<span>点此使用</span>
+										</div>
+										<img src="../img/media.png" width="112" height="112" />
+									</a>
+									<div class="clearfix">
+										<span class="pull-left">音乐5</span>
+										<a href="javascript:;" class="pull-right media_control pause"></a>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 背景音乐选择弹出框 E -->
+	</body>
+	<script type="text/javascript" src="../js/jquery-1.12.0.min.js"></script>
+	<script type="text/javascript" src="../js/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="../js/plugins/jquery.slimscroll.min.js"></script>
+	<script type="text/javascript" src="../js/colorpicker/palette-color-picker.js"></script>
+	<script type="text/javascript" src="../js/set_data.js"></script>
+	<script type="text/javascript" src="../js/index.js"></script>
+	<script type="text/javascript" src="../js/plugins/psd.min.js"></script>
+	<script type="text/javascript" src="../js/import.js"></script>
+</html>

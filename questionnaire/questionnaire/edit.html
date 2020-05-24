@@ -1,0 +1,1200 @@
+<div id="questionnaire-edit" class="clearfix">
+	<div class="top-section clearfix">
+		<div class="pull-right">
+			<div class="clearfix">
+				<a href="javascript:;" class="pull-left" @click="importQuestionnaire();">数据导出</a>
+				<a href="javascript:;" class="pull-left">问卷预览</a>
+				<a href="javascript:;" class="pull-left">问卷发布</a>
+			</div>
+		</div>
+	</div>
+	<div class="clearfix">
+		<div class="pull-left">
+			<div class="left topic-type js_height">
+				<ul class="tab-check clearfix">
+					<li class="pull-left" :class="leftType == 0 ? 'cur' : ''"><a href="javascript:;" @click="leftCheck(0);">题型选取</a></li>
+					<li class="pull-left" :class="leftType == 1 ? 'cur' : ''"><a href="javascript:;" @click="leftCheck(1);">问题编辑</a></li>
+				</ul>
+				<ul v-show="leftType == 0" class="topic-list">
+					<li v-for="(item,index) in models">
+						<div v-if="index == 0">
+							<div class="first"><span class="fa fa-caret-down" v-text="item.name"></span></div>
+							<ul>
+								<li :id="index" v-for="(i,v) in item.child" class="second lyrow ui-draggable">
+									<a :id="v" href="javascript:;" class="title drag" v-text="i.name"></a>
+								</li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+				<ul v-show="leftType == 1" class="topic-list">
+					<li v-for="(item,index) in models">
+						<div v-if="index > 0">
+							<div class="first"><span class="fa fa-caret-down" v-text="item.name"></span></div>
+							<ul>
+								<li :id="index" v-for="(i,v) in item.child" class="second Q_lyrow ui-draggable">
+									<a :id="v" href="javascript:;" class="title drag" v-text="i.name"></a>
+								</li>
+							</ul>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="pull-right">
+			<div class="right edit-data js_height">
+				<div class="normal">
+					<!-- 问卷名称 -->
+					<div class="edit-area">
+						<div class="name fa fa-forward">问卷名称<a href="javascript:;" class="fa fa-edit"></a></div>
+						<div class="text">
+							<input type="text" v-model="questionaire.title" placeholder="请输入问卷名称" style="width: 100%;" />
+						</div>
+					</div>
+					<!-- 题目编辑区 -->
+					<div v-if="activeData.subject" class="edit-area">
+						<div class="name fa fa-forward"><a href="javascript:;" class="insert-edit pull-right fa fa-edit" @click="insertPosition();">题目编辑 & 更新</a>题目</div>
+						<div class="text">
+							<textarea placeholder="请输入题目内容" v-model="activeData.subject"></textarea>
+						</div>
+						<div class="text edit-subject">
+							<template v-for="(item,index) in activeData.subjectArr">
+								<span v-text="item.char"></span>
+								<a v-if="item.isLocation" href="javascript:;" title="单击插入问题答案" class="fa fa-edit blue" @click="editKeyLocation(index);"></a>
+								<a v-else href="javascript:;" title="单击插入问题答案" class="fa fa-edit" @click="editKeyLocation(index);"></a>
+							</template>
+						</div>
+					</div>
+					<!-- 参数定义 -->
+					<div v-if="activeData.model" class="edit-area">
+						<div class="name fa fa-forward">参数<span class="red-desc">(参数个数由固定参数和自定义参数组成)</span></div>
+						<div class="text">
+							<ul class="params">
+								<li v-for="(item,key) in questionaire.globalParam" class="clearfix">
+									<input class="pull-left key" type="text" placeholder="定义" v-model="key" readonly="readonly" />
+									<span class="pull-left" style="padding-left:10px;"> = </span>
+									<input class="pull-left key" type="text" placeholder="参数" v-model="item.value" readonly="readonly" />
+									<span class="pull-left red-desc">(固定参数)</span>
+								</li>
+								<li v-for="(item,key) in activeData.keyLocation" class="clearfix">
+									<input class="pull-left key" type="text" placeholder="定义" v-model="item.param.key" />
+									<span class="pull-left" style="padding-left:10px;"> = </span>
+									<input class="pull-left key" type="text" placeholder="参数" v-model="item.param.value" />
+								</li>
+							</ul>
+						</div>
+					</div>
+					<!-- 计算公式编辑区 -->
+					<div v-if="activeData.model" class="edit-area">
+						<div class="name fa fa-forward">计算公式</div>
+						<div class="text">
+							<ul class="params">
+								<li class="clearfix">
+									<span class="pull-left">公式<span>1</span></span>
+									<input class="pull-left key-value" type="text" placeholder="请输入计算公式" v-model="activeData.model.formula" />
+									<div class="pull-left verify">
+										<a href="javascript:;" class="pull-left btn btn-sm btn-primary" @click="verifyParam(activeData.model.formula);">参数校验</a>
+										<a href="javascript:;" class="pull-left btn btn-sm btn-info" @click="verifyFormula(activeData.model.formula);">计算校验</a>
+									</div>
+								</li>
+								<li v-if="activeData.model.formula_ex" class="clearfix">
+									<span class="pull-left">公式<span>2</span></span>
+									<input class="pull-left key-value" type="text" placeholder="请输入计算公式" v-model="activeData.model.formula_ex" />
+									<div class="pull-left verify">
+										<a href="javascript:;" class="pull-left btn btn-sm btn-primary" @click="verifyParam(activeData.model.formula_ex);">参数校验</a>
+										<a href="javascript:;" class="pull-left btn btn-sm btn-info" @click="verifyFormula(activeData.model.formula_ex);">计算校验</a>
+									</div>
+								</li>
+							</ul>
+							<div class="notes clearfix">
+								<span class="pull-left" :class="(!verify.status)?'red-desc':'green-desc'" v-text="verify.desc"></span>
+							</div>
+						</div>
+					</div>
+					<!-- 选项编辑区 -->
+					<div v-if="activeData.options" class="edit-area">
+						<div class="name fa fa-forward">选项</div>
+						<ul class="option-list">
+							<li v-for="(item,index) in activeData.options" class="item clearfix">
+								<span class="pull-left order" v-text="index+1"></span>
+								<input v-if="activeData.Qtype == 'single_choice'" class="pull-left check" type="radio" name="" value="" />
+								<input v-if="activeData.Qtype == 'multiple_chioce'" class="pull-left check" type="checkbox" name="" value="" />
+								<div class="pull-right">
+									<a href="javascript:;" class="add fa fa-plus-square" @click="editOptions('add',index);"></a>
+									<a href="javascript:;" class="delete fa fa-minus-square" @click="editOptions('delete',index);"></a>
+								</div>
+								<div class="clearfix">
+									<input class="pull-left value" type="text" placeholder="赋值" v-model="item.value" />
+									<input class="pull-left keyname" type="text" placeholder="选项内容" v-model="item.element" />
+								</div>
+							</li>
+						</ul>
+					</div>
+					<!-- 指标绑定 -->
+					<div class="edit-area">
+						<div class="name fa fa-forward">第三级指标绑定</div>
+						<div class="text">
+							<ul class="row bind-index">
+								<div class="col-xs-4">
+									<select class="input-style">
+										<option>--第一级指标--</option>
+									</select>
+								</div>
+								<div class="col-xs-4">
+									<select class="input-style">
+										<option>--第二级指标--</option>
+									</select>
+								</div>
+								<div class="col-xs-4">
+									<select class="input-style">
+										<option>--第三级指标--</option>
+									</select>
+								</div>
+							</ul>
+						</div>
+					</div>
+					<!-- 场景设计 -->
+					<div v-if="activeData.QType=='scence'" class="edit-area">
+						<div class="name fa fa-forward">场景创建</div>
+						<div class="text">
+							<ul class="upload_img_box clearfix">
+								<li v-for="(item,index) in bgScence" class="pull-left">
+									<a v-if="item.imgUrl == ''" href="javascript:;" class="imgbox">
+										<input type="file" name="download" :id="item.id"  multiple="false" @change="fileSelect(item,'scence');"  />
+									</a>
+									<a v-else href="javascript:;" class="imgbox" @click="replaceActiveScence(item.imgUrl);">
+										<img :src="item.imgUrl" />
+									</a>
+									<i v-if="item.imgUrl != ''" class="remove fa fa-close" @click="deleteImg(index,'scence');"></i>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<!-- 热点区创建 -->
+					<div v-if="activeData.QType=='scence'" class="edit-area">
+						<div class="name fa fa-forward">热点添加</div>
+						<div class="text">
+							<ul class="clearfix widget-hot">
+								<li class="pull-left">
+									<a href="javascript:;" class="title" :class="(hotWidget.active == 0)?'cur':''" @click="checkWidget(0);">添加图片</a>
+								</li>
+								<li class="pull-left">
+									<a href="javascript:;" class="title" :class="(hotWidget.active == 1)?'cur':''" @click="checkWidget(1);">添加选区</a>
+								</li>
+							</ul>
+							<ul>
+								<!-- 添加图片 -->
+								<li v-show="hotWidget.active == 0" class="widget-item">
+									<ul class="upload_img_box sm clearfix">
+										<li v-for="(item,index) in hotWidget.imglist" class="pull-left">
+											<a v-if="item.imgUrl == ''" href="javascript:;" class="imgbox">
+												<input type="file" name="download" :id="item.id"  multiple="false" @change="fileSelect(item,'hotzone');"  />
+											</a>
+											<a v-else href="javascript:;" class="imgbox" @click="addHotItem(item,'image');">
+												<img :src="item.imgUrl" />
+											</a>
+											<i v-if="item.imgUrl != ''" class="remove fa fa-close" @click="deleteImg(index,'hotzone');"></i>
+										</li>
+									</ul>
+								</li>
+								<!-- 添加选区 -->
+								<li v-show="hotWidget.active == 1" class="widget-item">
+									<ul class="clearfix edit-hot">
+										<li class="pull-left"><span>编辑：</span></li>
+										<li class="pull-left"><input type="text" placeholder="相对于左" v-model="hotWidget.area.left" /></li>
+										<li class="pull-left"><input type="text" placeholder="相对于上" v-model="hotWidget.area.top" /></li>
+										<li class="pull-left"><span>大小：</span></li>
+										<li class="pull-left"><input type="text" placeholder="宽度" v-model="hotWidget.area.width" /></li>
+										<li class="pull-left"><input type="text" placeholder="高度" v-model="hotWidget.area.height" /></li>
+										<li class="pull-left"><a href="javascript:;" class="btn btn-primary" @click="addHotItem('','area');">确定</a></li>
+									</ul>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<!-- 热点编辑 -->
+					<div v-if="activeData.QType=='scence' && activeData.groups.length > 0" class="edit-area">
+						<div class="name fa fa-forward">热点编辑</div>
+						<div class="text">
+							<ul v-if="activeData.groups">
+								<li v-for="(item,index) in activeData.groups" :class="(editWidget.active == index)? 'check':''">
+									<ul class="clearfix edit-hot">
+										<li class="pull-left"><span class="fa fa-check-square-o" @click="setWidgetActive(index);"></span></li>
+										<li class="pull-left"><input type="text" placeholder="相对于左" v-model="item.left" /></li>
+										<li class="pull-left"><input type="text" placeholder="相对于上" v-model="item.top" /></li>
+										<li class="pull-left"><span>大小：</span></li>
+										<li class="pull-left"><input type="text" placeholder="宽度" v-model="item.width" /></li>
+										<li class="pull-left"><input type="text" placeholder="高度" v-model="item.height" /></li>
+										<li class="pull-left"><a href="javascript:;" class="btn btn-warning" @click="updateScenceData(index,item);">修改</a></li>
+										<li class="pull-left"><a href="javascript:;" class="btn btn-danger">删除</a></li>
+									</ul>
+								</li>
+							</ul>
+							
+						</div>
+					</div>
+					<!-- 事件模拟 -->
+					<div v-if="activeData.QType=='scence' && activeData.groups.length > 0"  class="edit-area">
+						<div class="name fa fa-forward">事件绑定</div>
+						<div class="text">
+							<ul>
+								<li class="bind-event clearfix">
+									<span class="pull-left">有效点击：</span>
+									<input class="pull-left" style="width: 100px;" type="text" placeholder="变量" value="" />
+									<input class="pull-left" style="width: 100px;" type="text" placeholder="默认为0" value="" />
+									
+								</li>
+								<li class="bind-event clearfix">
+									<span class="pull-left">无效点击：</span>
+									<input class="pull-left" style="width: 100px;" type="text" placeholder="变量" value="" />
+									<input class="pull-left" style="width: 100px;" type="text" placeholder="默认为0" value="" />
+								</li>
+								<li v-if="editWidget.active" class="bind-event clearfix">
+									<span class="pull-left">是否显示：</span>
+									<div class="pull-left">
+										<a href="javascript:;" class="turn" :class="activeData.groups[editWidget.active].visible?'on':'off'" @click="isVisible();">
+											<div class="circle"></div>
+										</a>
+									</div>
+								</li>
+								<li class="bind-event clearfix">
+									<span class="pull-left">事件绑定：</span>
+									<select class="pull-left">
+										<option>--请选择绑定的热点编号--</option>
+										<option>1</option>
+										<option>2</option>
+										<option>3</option>
+										<option>4</option>
+										<option>5</option>
+									</select>
+								</li>
+								<li v-if="editWidget" class="bind-event clearfix">
+									<span class="pull-left">计算公式：</span>
+									<input class="pull-left" type="text" placeholder="计算公式" />
+									<div class="pull-left verify">
+										<a href="javascript:;" class="pull-left btn btn-sm btn-primary" @click="verifyParam(activeData.model.formula);">参数校验</a>
+										<a href="javascript:;" class="pull-left btn btn-sm btn-info" @click="verifyFormula(activeData.model.formula);">计算校验</a>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				<div class="scence">
+					
+				</div>
+			</div>
+		</div>
+		<div class="content">
+			<div class="inner js_height">
+				<div class="title align_c"><span class="inline"><span v-text="questionaire.title"></span></span></div>
+				<div class=" topic-target">
+					<ul class="demo ui-sortable">
+						<!-- insert drag content -->
+						<li v-for="(item,key) in questionaire.question" class="topic-item" :id="key">
+						    <div class="topic-title clearfix">
+						    	<span v-text="item.name"></span>
+						    	<div class="pull-right">
+							    	<a href="javascript:;" class="btn btn-sm btn-warning" @click="deleteQType(key);">删除</a>
+							    	<a href="javascript:;" class="btn btn-sm btn-primary margin-l10 move">移动</a>
+							    </div>
+							</div>								
+							<div class="question-list">
+								<ul class="Qlist ui-sortable">
+									<!-- 填空题 或 选择题 -->
+									<li v-if="key == 'choice' || key == 'fill'" v-for="(i,o) in item.content" class="question-view" :class="(active.key == key && active.index == o)?'active':''" @click="setActiveQuestion(key,o);">
+										<!-- key == "choice" -->
+										<div class="bind-title"><span class="order" v-text="o+1"></span><span v-text="i.subjectView"></span></div>
+										<div class="check-list">
+											<ul class="clearfix">
+												<li v-for="(s,v) in i.options" class="pull-left">
+													<div class="clearfix">
+														<input v-if="i.Qtype == 'multiple_chioce'" class="pull-left check" type="checkbox" v-model="i.model.name" :value="s.value" />
+														<input v-if="i.Qtype == 'single_choice'" class="pull-left radio" type="radio" v-model="i.model.name" :value="s.value" />
+														<span class="pull-left" v-text="s.element"></span>
+													</div>
+												</li>
+											</ul>
+										</div>
+										<div class="question-edit">
+											<a href="javaScript:;" class="btn btn-warning" @click="deleteQuestion(key,o);">删除</a>
+											<a href="javaScript:;" class="btn btn-primary move">移动</a>
+										</div>
+									</li>
+									<!-- 矩阵题 -->
+									<li v-if="key == 'matrix'" v-for="(i,o) in item.content" class="question-view" :class="(active.key == key && active.index == o)?'active':''" @click="setActiveQuestion(key,o);">
+										<div class="bind-title">
+											<span class="order" v-text="o+1"></span>
+											<span v-text="i.subject"></span>
+										</div>
+										<div class="group-question">
+											<ul>
+												<li class="first">
+													<div class="clearfix">
+														<div class="pull-right align_c">
+															<template v-for="(s,v) in i.dimension">
+																<span class="inline grid" v-text="s.key"></span>
+															</template>
+														</div>
+													</div>
+												</li>
+												<li v-for="(k,t) in i.groups">
+													<div class="clearfix">
+														<div class="pull-right align_c">
+															<span v-for="(s,v) in i.dimension" class="inline grid">
+																<div class="inline clearfix">
+																	<input class="pull-left group-radio" type="radio" value="" />
+																	<span class="pull-left" v-text="s.value"></span>
+																</div>
+															</span>
+														</div>
+														<div class="group-qlist">
+															(<span v-text="t+1"></span>)
+															<span v-text="k.subject"></span>
+														</div>
+													</div>
+												</li>
+											</ul>
+										</div>
+										<div class="question-edit">
+											<a href="javaScript:;" class="btn btn-warning" @click="deleteQuestion(key,o);">删除</a>
+											<a href="javaScript:;" class="btn btn-primary move">移动</a>
+										</div>
+									</li>
+									<!-- 情境题 -->
+									<li v-if="key == 'scence'" v-for="(i,o) in item.content" class="question-view" :class="(active.key == key && active.index == o)?'active':''" @click="setActiveQuestion(key,o);">
+										<div class="bind-title"><span class="order" v-text="o+1"></span><span v-text="i.subject"></span></div>
+										<div class="scence-main">
+											<!-- 情境 -->
+											<div class="bg-scence" :style="{backgroundImage:'url(' + i.bg_url + ')'}">
+												<!-- 热点区 -->
+												<div class="hot-zone">
+													<ul>
+														<li v-for="(k,v) in i.groups">
+															<div v-if="k" class="widget_content" :class="(editWidget.active == v)? 'active':''" :style="k.style" @click="setWidgetActive(v);" draggable="true" @dragstart="widgetDrag($event,'start');" @dragend="widgetDrag($event,'end');">
+																<span class="hot-order" v-text="v+1"></span>
+																<div class="animated">
+																	<img v-if="k.type == 'image'" :src="k.imgUrl"  />
+																</div>
+																<div class="widget_scope" iscurrent="true">
+																	<div class="handle nw" resize-dir="nw" draggable="true" @dragstart="widgetResize($event,'start','nw');" @dragend="widgetResize($event,'end','nw');"></div>	
+																	<div class="handle n" resize-dir="n" draggable="true" @dragstart="widgetResize($event,'start','n');" @dragend="widgetResize($event,'end','n');"></div>	
+																	<div class="handle ne" resize-dir="ne" draggable="true" @dragstart="widgetResize($event,'start','ne');" @dragend="widgetResize($event,'end','ne');"></div>
+																	<div class="handle e" resize-dir="e" draggable="true" @dragstart="widgetResize($event,'start','e');" @dragend="widgetResize($event,'end','e');"></div>
+																	<div class="handle se" resize-dir="se" draggable="true" @dragstart="widgetResize($event,'start','se');" @dragend="widgetResize($event,'end','se');"></div>
+																	<div class="handle s" resize-dir="s" draggable="true" @dragstart="widgetResize($event,'start','s');" @dragend="widgetResize($event,'end','s');"></div>
+																	<div class="handle sw" resize-dir="sw" draggable="true" @dragstart="widgetResize($event,'start','sw');" @dragend="widgetResize($event,'end','sw');"></div>
+																	<div class="handle w" resize-dir="w" draggable="true" @dragstart="widgetResize($event,'start','w');" @dragend="widgetResize($event,'end','w');"></div>
+																</div>
+															</div>
+														</li>
+													</ul>
+													<!-- 绑定事件 -->
+													<!-- 未绑定事件 -->
+
+												</div>
+											</div>
+										</div>
+										<div class="question-edit">
+											<a href="javaScript:;" class="btn btn-warning" @click="deleteQuestion(key,o);">删除</a>
+											<a href="javaScript:;" class="btn btn-primary move">移动</a>
+										</div>
+									</li>
+								</ul>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+ <script type="text/javascript">
+    var vm = new Vue({
+        el: '#questionnaire-edit',
+        data: {
+        	leftType : 1, //左侧菜单栏控制
+        	questionaire : {},//问卷数据
+        	models:[], //题型数据模板
+        	//活动编辑区
+        	active : {"key":"","index":""}, //活动数据下标记录,
+	        activeData : {}, //编辑活动数据
+	        //公式验证
+	        verify : {
+	        	status : '',
+	        	desc : ''
+	        },
+	        //图片上传,情境题场景
+	        bgScence : [],
+	        //热点区控件创建 - 数据模型
+	        hotWidget : {
+	        	active : 0,  //当前编辑的控件序号
+	        	//图片
+	        	imglist : [],
+	        	//热点选取默认数据
+	        	area : {
+	        		left:0,
+	        		top:0,
+	        		width:50,
+	        		height:50
+	        	},
+	        	//图片选取默认数据
+	        	image : {
+	        		left:50,
+	        		top:0,
+	        		width:50,
+	        		height:50
+	        	}
+	        },
+	        //热点区单个控件编辑 - <scence.content[index].groups[activeIndex]>
+	        editWidget : {
+	        	active : 0,
+	        	spaceX : '',
+	        	spaceY : '',
+	        	drag : {
+	        		X : {'start':'','end':''},
+	        		Y : {'start':'','end':''}
+	        	},
+	        	groupItem : {}
+	        },
+        },
+        created : function(){
+          //TODO:
+        },
+        mounted : function(){
+        	var that = this;
+        	var winH = $(window).height();
+        	$('.js_height').height(winH-40);
+        	// 数据初始化
+        	that.initScenceData(0,'scence');
+        	that.initScenceData(0,'hotzone');
+        	//获取数据模板
+	        var success = function (res) {
+	            that.models = res;
+	            //事件注册
+	            that.$nextTick(function(){
+        			that.widgetEvent();
+        		});
+	        }
+	        config.ajaxGetData("GET", config.protocol['models'], success);
+	        //获取问卷数据
+	        var callback = function(res){
+	        	//数据初始化
+	        	//that.initQuestionnaire(res);
+	        	//设置题目答案数据展示
+	        	if(res.question){
+	        		res.question = that.setSubjectArr(res.question);
+	        	}
+	        	//设置场景题热点区样式
+        		for(var i = 0;i < res.question.scence.content.length;i++){
+        			res.question.scence.content[i].groups = that.setWidgetStyle(res.question.scence.content[i].groups);
+        		}
+	        	that.questionaire = res;
+	        	that.$nextTick(function(){
+	        		that.QwidgetEvent();
+	        	});
+	        };
+	        config.ajaxGetData("GET",config.protocol['questionnaire'],callback);
+        },
+        methods : {
+			pageLoad : function(page){
+				$('.js_load').empty().load(page);
+			},
+			//1.题型选取 || 问题编辑
+			leftCheck : function(type){
+				var that = this;
+				that.leftType = type;
+			},
+			//获取编辑状态的数据信息
+			setActiveData : function(key,index){
+				var that = this;
+				that.active['key'] = key;
+				that.active['index'] = index;
+				that.activeData = that.questionaire.question[key].content[index];
+				//数据重置
+				that.verify  = {status : '',desc : ''};
+		        //题目更新
+				that.updateSubjectView();
+			},
+			//活动数据修改
+			setActiveQuestion : function(key,index){
+				var that = this;
+				that.setActiveData(key,index);
+			},
+			//删除题型
+			deleteQType : function(key){
+				var that = this;
+				that.$delete(that.questionaire.question,key);
+			},
+			/*---问题组件 START----*/
+			//提取题型 & 问题数据模板
+			getDataModel : function(e,t,callback){
+				var that = this;
+				var $target = $(e.target);
+				var index = e.target.id,
+					key = $target.find('a').attr('id');
+				var $data = that.models[index].child[key],
+					index = $(t.helper).index();
+				$(e.toElement).parent().remove();
+				callback($data,index);
+				$target = null;
+			},
+           //题型选取组件拖拽
+			widgetEvent : function(){
+				var that = this;
+				var creatType = function(data){
+					var key = Object.keys(data.data_model);
+					//TODO:模板数据深拷贝
+					var newData = deepCopy(data.data_model[key],newData);
+					that.$set(that.questionaire.question,key,newData);
+					newData = null;
+				};
+				$(".demo, .demo .topic-item").sortable({
+					connectWith:".topic-item",
+					opacity:0.35,
+					handle:".move"
+				});
+				$(".lyrow").draggable({
+					connectToSortable:".demo",   
+					helper:"clone",
+					handle:".drag",
+					drag:function(e,t){},
+					stop:function(e,t){
+						that.getDataModel(e,t,creatType);
+						this.creatType = null;
+					}    
+				});
+			},
+			//问题编辑组件拖拽
+			QwidgetEvent : function(){
+				var that = this;
+				var index_prev, //问题移动的初始下标
+					index_next; //问题移动的最终下标
+				//导入问题数据模板
+				var creatQuestion = function(data,index){
+					//console.log(data.key,that.questionaire.question[data.key]);
+					if(that.questionaire.question[data.key]){
+						that.questionaire.question[data.key].content.splice(index,0,data.data_model);
+						//console.log(that.questionaire.question[data.key].content);
+						that.setActiveData(data.key,index);
+					}
+				};
+				//更新问题序列
+				var updateQuestion = function(key){
+					var temp = that.questionaire.question[key].content[index_prev];
+					if(temp){
+						if(index_prev < index_next){
+							// that.questionaire.question[key].content.splice(index_prev,1);
+							//that.questionaire.question[key].content.splice(index_next-1,0,temp);
+							// that.$set(that.questionaire.question[key].content,index_next-1,temp);
+						}else if(index_prev > index_next){
+							// that.questionaire.question[key].content.splice(index_prev,1);
+							// that.questionaire.question[key].content.splice(index_next,0,temp);
+							// that.$set(that.questionaire.question[key].content,index_next,temp);
+						}
+						index_prev = null;
+						index_next = null;
+					}
+				};
+				$(".Qlist").sortable({
+					connectWith:".Qlist",
+					opacity:0.35,
+					handle:".move",
+					start : function(e,t){
+						index_prev = $(t.item).index();
+					},
+					update : function(e,t){
+						var key = $(t.item).parents('.topic-item').attr('id');
+						index_next = $(t.item).index();
+						updateQuestion(key);
+						this.updateQuestion = null;
+					}
+				});
+				$(".Q_lyrow").draggable({
+					connectToSortable:".Qlist",   
+					helper:"clone",
+					handle:".drag",
+					drag:function(e,t){},
+					stop:function(e,t){
+						that.getDataModel(e,t,creatQuestion);
+						this.creatQuestion = null;
+					}    
+				});
+			},
+			deleteQuestion : function(key,index){
+				var that = this;
+				that.questionaire.question[key].content.splice(index,1);
+			},
+			//题目与答案信息关联
+			setSubjectArr : function(question){
+				var that = this;
+				for(var key in question){
+					var arr = question[key].content;
+					for(var i = 0;i < arr.length;i++){
+						if(arr[i].keyLocation){
+							var subjectView = that.setSubjectView(arr[i].subject,arr[i].keyLocation);
+							question[key].content[i]['subjectView'] = subjectView;
+						}
+					}
+				}
+				return question;
+			},
+			setSubjectView : function(subject,keyLocation){
+				var arr = subject.split('');
+				for(var i = 0;i < keyLocation.length;i++){
+					var start = keyLocation[i].start;
+					arr.splice(start,0,'_____');
+				}
+				return arr.join('');
+			},
+			insertPosition : function(){
+				var that = this;
+				var len = that.activeData.subject.length;
+				var keys = that.activeData.keyLocation.length;
+				var arr = [];
+				for(var i = 0;i < len;i++){
+					var isLocation = false;
+					for(var j = 0;j < keys;j++){
+						if(that.activeData.keyLocation[j].start == (i+1)){
+							isLocation = true;
+							break;
+						}
+					}
+					arr.push({
+						"index":i,
+						"char":that.activeData.subject[i],
+						'isLocation' : isLocation
+					});
+				}
+				that.$set(that.activeData,"subjectArr",arr);
+				//题目更新 subjectView
+				that.updateSubjectView();
+			},
+			//编辑答案的插入位置
+			editKeyLocation : function(index){
+				var that = this;
+				var single = function(){
+					var arr = that.activeData.subjectArr;
+					for(var i = 0;i < arr.length;i++){
+						if(index == i){
+							that.activeData.subjectArr[i].isLocation = true;
+						}else{
+							that.activeData.subjectArr[i].isLocation = false;
+						}
+					}
+				};
+				var multiple = function(){
+					if(that.activeData.subjectArr[index].isLocation){
+						that.activeData.subjectArr[index].isLocation = false;
+					}else{
+						that.activeData.subjectArr[index].isLocation = true;
+					} 
+				};
+				//题型判断
+				var Qtype = that.activeData.Qtype;
+				switch(Qtype){
+					case "single_choice": //单项选择
+					case "single_fill": //单项填空
+						single();
+						break;
+					default:
+						multiple();
+						break;
+				}
+				//参数更新 keyLocation.param
+				that.updateKeyLocation(that.activeData.subjectArr);
+				//题目更新 subjectView
+				that.updateSubjectView();
+			},
+			//题目更新
+			updateSubjectView : function(){
+				var that = this;
+				if(that.activeData.subject && that.activeData.keyLocation){
+					var subjectView = that.setSubjectView(that.activeData.subject,that.activeData.keyLocation);
+					that.activeData['subjectView'] = subjectView;
+				}
+			},
+			//选项编辑
+			editOptions : function(type,index){
+				var that = this;
+				switch(type){
+					case "add":
+						that.activeData.options.push({
+							"element":"选项",
+							"value":""
+						});
+						break;
+					case "delete":
+						if(that.activeData.options.length > 1){
+							that.activeData.options.splice(index,1);
+						}
+					break;
+				}
+			},
+			//参数更新
+			updateKeyLocation : function(arr){
+				var that = this;
+				var indexs = [];
+				for(var i = 0;i < arr.length;i++){
+					if(arr[i].isLocation){
+						indexs.push(arr[i].index);
+					}
+				}
+				that.activeData.keyLocation = [];
+				for(i = 0;i < indexs.length;i++){
+					var obj = {
+						"start" : Number(indexs[i]+1),
+						"size":6,
+						"param":{"key":'<V'+Number(indexs[i]+1)+'>',"value":""}
+					}
+					that.activeData.keyLocation.push(obj);
+				}
+			},
+			isDefinedParam : function(arr){
+				for(var i = 0;i < arr.length;i++){
+					if(arr[i].param.key == ''){
+						return false;
+					}
+				}
+				return true;
+			},
+			isMatchParam : function(arr,str){
+				for(var i = 0;i < arr.length;i++){
+					if(str.indexOf(arr[i].param.key) < 0){
+						return false;
+					}
+				}
+				return true;
+			},
+			isRepeatParam : function(arr){
+				var maps = {};
+				for(var i = 1;i < arr.length;i++){
+					if(!maps[arr[i].param.key]){
+						maps[arr[i].param.key] = [];
+					}
+					maps[arr[i].param.key].push(i);
+					if(maps[arr[i].param.key].length > 1){
+						return false;
+					}
+				}
+				return true;
+			},
+			isSymbol : function(){
+				var isSymbol = ['+','-','*','/'];
+			},
+			isParamValue : function(arr){
+				for(var i = 0;i < arr.length;i++){
+					if(arr[i].param.value == ''){
+						return false;
+					}
+				}
+				return true;
+			},
+			//检索替换
+			replaceFormula : function(globalV,arr,str){
+				//全局变量替换
+				for(var key in globalV){
+					str = str.replace(new RegExp(key,'g'),globalV[key].value.toString());
+				}
+				for(var i = 0;i < arr.length;i++){
+					str = str.replace(new RegExp(arr[i].param.key,'g'),arr[i].param.value.toString());
+				}
+				return str;
+			},
+			//参数校验
+			verifyParam : function(formula){
+				var that = this;
+				//验证参数是否已全部定义
+				if(!that.isDefinedParam(that.activeData.keyLocation)){
+					that.verify = {
+						"status":false,
+						"desc" : "参数未定义"
+					};
+					that.$set(that.verify,'desc',that.verify.desc);
+					return false;
+				}
+				//验证参数定义是否重复
+				if(!that.isRepeatParam(that.activeData.keyLocation)){
+					that.verify = {
+						"status":false,
+						"desc" : "有重复定义的参数"
+					};
+					that.$set(that.verify,'desc',that.verify.desc);
+					return false;
+				}
+				//验证参数是否与公式匹配
+				if(!that.isMatchParam(that.activeData.keyLocation,formula)){
+					that.verify = {
+						"status":false,
+						"desc" : "参数与计算公式不匹配"
+					};
+					that.$set(that.verify,'desc',that.verify.desc);
+					return false;
+				}
+				//验证计算符是否正确
+				//验证参数是否以计算符分割
+				that.verify = {
+					"status":true,
+					"desc" : "验证通过"
+				};
+				that.$set(that.verify,'desc',that.verify.desc);
+				return true;
+			},
+			//公式校验
+			verifyFormula : function(formula){
+				var that = this;
+				if(!that.verifyParam(formula)){
+					that.verify = {
+						"status":false,
+						"desc" : "参数校验未通过"
+					};
+					that.$set(that.verify,'desc',that.verify.desc);
+					return false;
+				};
+				//校验值是否输入完成
+				if(!that.isParamValue(that.activeData.keyLocation)){
+					that.verify = {
+						"status":false,
+						"desc" : "请输入参数校验值"
+					};
+					that.$set(that.verify,'desc',that.verify.desc);
+					return false;
+				}
+				//正则替换
+				var formula = that.replaceFormula(that.questionaire.globalParam,that.activeData.keyLocation,formula);
+				//公式计算
+				var testValue = eval(formula);
+				that.verify = {
+					"status":true,
+					"desc" : "计算结果："+testValue
+				};
+				that.$set(that.verify,'desc',that.verify.desc);
+			},
+			//场景背景图片数据初始化
+			initScenceData : function(index,key){
+				var that = this;
+				if(key == 'scence'){
+					that.$set(that.bgScence,index,{
+						"id":'file-btn-'+index,
+						"imgUrl":""
+					});
+				}else if(key == 'hotzone'){
+					that.$set(that.hotWidget.imglist,index,{
+						"id":'img-btn-'+index,
+						"imgUrl":""
+					});
+				}
+			},
+			//文件选择，图片上传
+			initUploadImgData : function(file,key){
+				var that = this;
+				var reader  = new FileReader();
+		    	reader.readAsDataURL(file);
+		    	reader.addEventListener("load", function (){
+		    		if(key == 'scence'){
+		    			var size = that.bgScence.length;
+		    			that.$set(that.bgScence[size-1],'imgUrl',reader.result);
+		    		}else if(key == 'hotzone'){
+		    			var size = that.hotWidget.imglist.length;
+		    			that.$set(that.hotWidget.imglist[size-1],'imgUrl',reader.result);
+		    		}
+		    		that.initScenceData(size,key);
+				 }, false);
+			},
+			fileSelect : function(data,key){
+				var that = this;
+				//HTML5文件API操作
+			    var file = document.getElementById(data.id).files[0];
+			    //判断上传文件大小
+			    if (file) {
+			        var fileSize = 0;
+			        if (file.size > 1024 * 1024){
+			          fileSize = (Math.round(file.size * 100 / (1024 * 1024)) / 100).toString() + 'MB';
+			        }else{
+			          fileSize = (Math.round(file.size * 100 / 1024) / 100).toString() + 'KB';
+			        }
+			        if(Math.round(file.size * 100 / (1024 * 1024)) / 100 > 2){
+			            alert("文件图片太大,上传失败");
+			            return false;
+			        }
+			        //图片本地预览
+			        that.initUploadImgData(file,key);
+			    }
+			},
+			//删除场景图片
+			deleteImg : function(index,key){
+				var that = this;
+				if(key == 'scence'){
+					that.bgScence.splice(index,1);
+				}else if(key == 'hotzone'){
+					that.hotzone.imglist.splice(index,1);
+				}
+			},
+			//替换编辑区场景图片
+			replaceActiveScence : function(imgUrl){
+				var that = this;
+				that.$set(that.activeData,'bg_url',imgUrl);
+			},
+			//热点编辑
+			checkWidget : function(index){
+				var that = this;
+				that.$set(that.hotWidget,'active',index);
+			},
+			//设置热点区样式数据
+			setWidgetStyle : function(item){
+				for(var i = 0;i < item.length;i++){
+					item[i]['style'] = {
+						left : item[i].left +'px',
+						top : item[i].top + 'px',
+						width : item[i].width + 'px',
+						height : item[i].height +'px'
+					};
+				}
+				return item;
+			},
+			//编辑热点选取数据
+			createGroupItem : function(type){
+				var that = this;
+				//数据深拷贝
+				var obj = {
+					'type' : type,
+					'left' : that.hotWidget[type].left,
+					'top' : that.hotWidget[type].top,
+					'width' : that.hotWidget[type].width,
+					'height': that.hotWidget[type].height
+				};
+				obj['type'] = type;
+				obj['style'] = {
+					left : obj.left+'px',
+					top : obj.top+'px',
+					width : obj.width+'px',
+					height : obj.height+'px'
+				};
+				return obj;
+			},
+			//更新热点数据
+			updateScenceData : function(i,item){
+				var that = this;
+				var key = that.active.key,
+					index = that.active.index;
+				var order = that.hotWidget.active;
+				var obj = that.createGroupItem(item.type);
+				//console.log('style',obj);
+				//TODO:
+				// that.$set(that.questionaire.question[key].content[index].groups,i,obj);
+				// that.$set(that.activeData.groups,i,item);
+			},
+			//添加热点区元素
+			addHotItem : function(item,type){
+				var that = this;
+				var key = that.active.key,
+					index = that.active.index;
+				var obj = that.createGroupItem(type);
+				switch(type){
+					case 'image':
+						obj['imgUrl'] = item.imgUrl;
+						break;
+					case 'area':
+					break;
+				}
+				var len = that.questionaire.question[key].content[index].groups.length;
+				//数据更新
+				that.$set(that.questionaire.question[key].content[index].groups,len,obj);
+				that.$set(that.activeData.groups,len,obj);
+				obj = null;
+				that.setWidgetActive(len);
+			},
+			setWidgetActive : function(index){
+				var that = this;
+				that.editWidget.active = index;
+			},
+			modifyOffset : function(spaceX,spaceY,dirArr,point){
+				var that = this;
+				//获取当前正在推拽的元素信息
+				var key = that.active.key,
+					index = that.active.index;
+				var order = that.editWidget.active;
+				for(var i = 0;i < dirArr.length;i++){
+					//拖拽数据元素修改
+					var temp = (dirArr[i] == 'width' || dirArr[i] == 'left') ? spaceX : spaceY;
+					if(dirArr[i] == 'width'){
+						switch(point){
+							case 'w':
+							case 'nw':
+							temp = (temp > 0) ? temp : Math.abs(temp);
+							break;
+						}
+					}
+					that.questionaire.question[key].content[index].groups[order][dirArr[i]] += temp;
+					that.questionaire.question[key].content[index].groups[order].style[dirArr[i]] = that.questionaire.question[key].content[index].groups[order][dirArr[i]] +'px';
+					that.activeData.groups[order][dirArr[i]] = that.questionaire.question[key].content[index].groups[order][dirArr[i]];
+					that.activeData.groups[order].style[dirArr[i]] = that.activeData.groups[order][dirArr[i]] +'px';
+				}
+				//数据重置
+				that.editWidget.spaceX = '';
+				that.editWidget.spaceY = '';
+				that.editWidget.drag = {
+	        		X : {'start':'','end':''},
+	        		Y : {'start':'','end':''}
+	        	};
+			},
+			//热点区拖拽 - 位置修改
+			widgetDrag : function(e,type){
+				var that = this;
+					//获取偏移量
+					that.editWidget.drag.X[type] = e.clientX;
+					that.editWidget.drag.Y[type] = e.clientY;
+				switch(type){
+					case 'end':
+					//偏移量计算
+					that.editWidget.spaceX =  that.editWidget.drag.X['end'] - that.editWidget.drag.X['start'];
+					that.editWidget.spaceY =  that.editWidget.drag.Y['end'] - that.editWidget.drag.Y['start'];
+					that.modifyOffset(that.editWidget.spaceX,that.editWidget.spaceY,['left','top']);
+					break;
+				}
+			},
+			//热点区拖拽 - 大小修改
+			/* 
+			|  e : 事件参数
+			|  type : 拖拽事件 （start,move,end）
+			|  direct :拖拽方位
+			|  方法描述：控件角点获取，设置拖动参数，修改控件元素的大小和位置
+			*/
+			widgetResize : function(e,type,direct){
+				//阻止事件冒泡
+				e.stopPropagation();
+				var that = this;
+				that.editWidget.drag.X[type] = e.clientX;
+				that.editWidget.drag.Y[type] = e.clientY;
+				switch(direct){
+					case 'nw': //左上,修改位置和宽高,
+						switch(type){
+							case 'start':
+							break;
+							case 'end':
+							that.editWidget.spaceX =  that.editWidget.drag.X['end'] - that.editWidget.drag.X['start'];
+							that.editWidget.spaceY =  that.editWidget.drag.Y['end'] - that.editWidget.drag.Y['start'];
+							that.modifyOffset(that.editWidget.spaceX,that.editWidget.spaceY,['left','top','width','height']);
+							break;
+						}
+					break;
+					case 'n': //上中,修改位置和高度
+						switch(type){
+							case 'start':
+							break;
+							case 'end':
+							that.editWidget.spaceX =  that.editWidget.drag.X['end'] - that.editWidget.drag.X['start'];
+							that.editWidget.spaceY =  that.editWidget.drag.Y['end'] - that.editWidget.drag.Y['start'];
+							that.modifyOffset(that.editWidget.spaceX,that.editWidget.spaceY,['left','top','width','height']);
+							break;
+						}
+					break;
+					case 'ne': //右上,修改位置和宽高
+						switch(type){
+							case 'start':
+							break;
+							case 'end':
+							that.editWidget.spaceX =  that.editWidget.drag.X['end'] - that.editWidget.drag.X['start'];
+							that.editWidget.spaceY =  that.editWidget.drag.Y['end'] - that.editWidget.drag.Y['start'];
+							that.modifyOffset(that.editWidget.spaceX,that.editWidget.spaceY,['left','top','width','height']);
+							break;
+						}
+					break;
+					case 'e': //右中,修改宽度
+						switch(type){
+							case 'start':
+							break;
+							case 'end':
+							that.editWidget.spaceX =  that.editWidget.drag.X['end'] - that.editWidget.drag.X['start'];
+							that.editWidget.spaceY =  that.editWidget.drag.Y['end'] - that.editWidget.drag.Y['start'];
+							that.modifyOffset(that.editWidget.spaceX,that.editWidget.spaceY,['width']);
+							break;
+						}
+					break;
+					case 'se': //右下,修改宽度和高度
+						switch(type){
+							case 'start':
+							break;
+							case 'end':
+							that.editWidget.spaceX =  that.editWidget.drag.X['end'] - that.editWidget.drag.X['start'];
+							that.editWidget.spaceY =  that.editWidget.drag.Y['end'] - that.editWidget.drag.Y['start'];
+							that.modifyOffset(that.editWidget.spaceX,that.editWidget.spaceY,['width','height']);
+							break;
+						}
+					break;
+					case 's': //下中,修改高度
+						switch(type){
+							case 'start':
+							break;
+							case 'end':
+							that.editWidget.spaceX =  that.editWidget.drag.X['end'] - that.editWidget.drag.X['start'];
+							that.editWidget.spaceY =  that.editWidget.drag.Y['end'] - that.editWidget.drag.Y['start'];
+							that.modifyOffset(that.editWidget.spaceX,that.editWidget.spaceY,['height']);
+							break;
+						}
+					break;
+					case 'sw': //左下,修改位置和大小
+						switch(type){
+							case 'start':
+							break;
+							case 'end':
+							that.editWidget.spaceX =  that.editWidget.drag.X['end'] - that.editWidget.drag.X['start'];
+							that.editWidget.spaceY =  that.editWidget.drag.Y['end'] - that.editWidget.drag.Y['start'];
+							that.modifyOffset(that.editWidget.spaceX,that.editWidget.spaceY,['left','top','width','height']);
+							break;
+						}
+					break;
+					case 'w': // 左中,修改位置和宽度
+						switch(type){
+							case 'start':
+							break;
+							case 'end':
+							that.editWidget.spaceX =  that.editWidget.drag.X['end'] - that.editWidget.drag.X['start'];
+							that.editWidget.spaceY =  that.editWidget.drag.Y['end'] - that.editWidget.drag.Y['start'];
+							that.modifyOffset(that.editWidget.spaceX,that.editWidget.spaceY,['left','top','width'],'w');
+							break;
+						}
+					break;
+				}
+			},
+			//是否显示热点区
+			isVisible : function(){
+				var that = this;
+				var tag = that.activeData.groups[that.editWidget.active].visible;
+				// console.log('1163',that.activeData.groups[that.editWidget.active].visible);
+				if(tag){
+					that.activeData.groups[that.editWidget.active].visible = false;
+				}else{
+					that.activeData.groups[that.editWidget.active].visible = true;
+				}
+			},
+			//问卷数据导出
+			importQuestionnaire : function(type){
+				var that = this;
+				var cache = [];
+				JSON.stringify(that.questionaire, function (key, value) {
+					if (typeof value === 'object' && value !== null) {
+						if (cache.indexOf(value) !== -1) {
+							return;
+						}
+						cache.push(value);
+					}
+					//本地缓存处理
+					return value;
+				});
+				//json转字符串
+				// console.log(JSON.stringify(cache[0]));
+				haoutil.file.downloadFile(that.questionaire.title+'.json',JSON.stringify(cache[0]));
+			}
+		}
+    });
+</script>
+<!-- 问题记录
+	1.模板组件数据指向错误，需进行深拷贝，修改原型链指针
+	2.添加参数的默认变量定义数据
+	3.添加问卷数据初始化方法 initQuestionnaire
+	4.添加获取图片宽高的方法
+	5.情境题切换，清空/初始化editWidget数据信息
+	6.更新热点数据与效果展示 updateScenceData
+	7.添加热点绑定事件方法（关系链）
+ -->
